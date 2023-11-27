@@ -1,0 +1,5 @@
+const menuIcon = () => (
+  <path d="M10 42H50V37.8333H10V42ZM10 31.5833H50V27.4167H10V31.5833ZM10 17V21.1667H50V17H10Z"/>
+);
+
+export default menuIcon;

@@ -1,0 +1,1 @@
+type IEditoraListagem = IEditoraDetalhe[];
