@@ -40,12 +40,12 @@ export default function ButtonBase({
         textDecoration: 'none',
         ...styleSheet
       }}
+      {...props}
       onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
         isLink && event.preventDefault();
         isLink && router.push(href!);
         !isLink && props.onClick && props.onClick(event);
       }}
-      {...props}
     >
       {children}
     </StyledButton>

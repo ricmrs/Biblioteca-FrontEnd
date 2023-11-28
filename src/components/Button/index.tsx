@@ -27,7 +27,6 @@ export default function Button({
   return (
     <ButtonBase
       styleSheet={{
-        alignSelf: 'flex-start',
         alignItems: 'center',
         justifyContent: 'center',
         transition: "transform 150ms ease-out",
