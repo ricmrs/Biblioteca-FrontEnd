@@ -1,15 +1,30 @@
 import Box from "@/components/Box";
-import Button from "@/components/Button";
-import Icon from "@/components/Icon";
-import Text from "@/components/Text";
+import Form from "@/components/Form";
 import { editoraService } from "@/services/editoraService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from "react";
 
 export default function AtualizacaoPage() {
   const theme = useTheme();
   const service = editoraService();
+
+  async function atualizar(
+    event: React.MouseEvent<HTMLButtonElement>, 
+    value: string, 
+    setValue: Dispatch<SetStateAction<string>>)
+    {
+      event.preventDefault();
+      const editora = { id: 1, nome: value }
+      try {
+        const resposta = await service.atualizar(editora);
+        console.log("Editora cadastrado com sucesso!");
+      } catch(err) {
+        console.error(err);
+      } finally {
+        setValue('');
+      }
+  }
 
   return (
     <>
@@ -22,19 +37,7 @@ export default function AtualizacaoPage() {
           backgroundColor: theme.colors.warning.x100
         }}
       >
-        <Box
-          styleSheet={{
-            width: "80%",
-            padding: 20,
-            paddingBottom: 30,
-            gap: 20,
-            borderRadius: 15,
-            alignItems: "center",
-            backgroundColor: theme.colors.neutral.x050
-          }}
-        >
-          <Text tag="h1" variant="heading3">Editora</Text>
-        </Box>
+        <Form title="Atualização" buttonName="Atualizar" onSubmit={atualizar}/>
       </Box>
     </>
   )

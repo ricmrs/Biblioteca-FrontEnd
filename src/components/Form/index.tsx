@@ -3,26 +3,17 @@ import Box from "../Box";
 import Button from "../Button";
 import Text from "../Text";
 import Input from "../Input";
-import { editoraService } from "@/services/editoraService";
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-export default function Form(){
+interface IForm {
+  title: string;
+  buttonName: string;
+  onSubmit: (event: React.MouseEvent<HTMLButtonElement>, value: string, setValue: Dispatch<SetStateAction<string>>) => void;
+}
+
+export default function Form({ title, buttonName, onSubmit }: IForm ){
   const theme = useTheme();
-  const service = editoraService();
   const [value, setValue] = useState('');
-
-  async function cadastrar(event: React.MouseEvent<HTMLButtonElement>){
-    event.preventDefault();
-    const editora = { nome: value }
-    try {
-      const resposta = await service.cadastrar(editora);
-      console.log("Editora cadastrado com sucesso!");
-    } catch(err) {
-      console.error(err);
-    } finally {
-      setValue('');
-    }
-  }
 
   return (
     <Box tag="form" 
@@ -35,7 +26,7 @@ export default function Form(){
         justifyContent: "space-between"
       }}
     >
-      <Text tag="h1" variant="heading3">Cadastro - Editora</Text>
+      <Text tag="h1" variant="heading3">{title} - Editora</Text>
       <Box styleSheet={{ gap: 10 }}>
         <Text tag="label" htmlFor="nome">Nome</Text>
         <Input id="nome" name="nome" value={value} onChange={event => setValue(event.target.value)}/>
@@ -49,9 +40,9 @@ export default function Form(){
           color: theme.colors.neutral.x050,
           backgroundColor: theme.colors.warning.x500 
         }} 
-        onClick={cadastrar}
+        onClick={event => onSubmit(event, value, setValue)}
       >
-        Cadastrar
+        {buttonName}
       </Button>
     </Box>
   )
