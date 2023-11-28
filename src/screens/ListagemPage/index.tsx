@@ -1,31 +1,36 @@
 import Box from "@/components/Box";
 import Button from "@/components/Button";
 import Icon from "@/components/Icon";
-import Link from "@/components/Link";
 import Text from "@/components/Text";
 import { editoraService } from "@/services/editoraService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 
 export default function ListagemPage() {
   const theme = useTheme();
   const service = editoraService();
+  const params = useParams();
+  const router = useRouter();
+
   const [editoras, setEditoras] = useState<IEditoraListagem>([]);
-  const [paginaAtual, setPaginaAtual] = useState<number>(0);
   const [primeiraPagina, setPrimeiraPagina] = useState<boolean>();
   const [ultimaPagina, setUltimaPagina] = useState<boolean>();
 
   useEffect(() => {
-    try {
-      carregaDadosEditoras();
-    } catch (err) {
-      console.error(err);
+    if(params?.page) {
+      try {
+        carregaDadosEditoras();
+      } catch (err) {
+        console.error(err);
+      }
     }
-  }, [paginaAtual])
+  }, [params?.page])
 
   async function carregaDadosEditoras() {
-    const paginaEditoras = await service.listarTodas(paginaAtual);
+    const page = parseInt(params.page as string) - 1;
+    const paginaEditoras = await service.listarTodas(page);
     setEditoras(paginaEditoras.content)
     setPrimeiraPagina(paginaEditoras.first);
     setUltimaPagina(paginaEditoras.last);
@@ -33,12 +38,14 @@ export default function ListagemPage() {
 
   function voltarPagina() {
     if (primeiraPagina) return;
-    setPaginaAtual(paginaAtual - 1);
+    const page = (parseInt(params.page as string) - 1).toString();
+    router.push(page);
   }
 
   function avancarPagina() {
     if (ultimaPagina) return;
-    setPaginaAtual(paginaAtual + 1);
+    const page = (parseInt(params.page as string) + 1).toString();
+    router.push(page);
   }
 
   async function excluir(id: number) {
@@ -75,7 +82,7 @@ export default function ListagemPage() {
         >
           <Text tag="h1" variant="heading3">Editoras</Text>
           <Box styleSheet={{ width: "100%" }}>
-            <Box styleSheet={{ gap: 5, height: 527 }}>
+            <Box styleSheet={{ gap: 5, height: { md: 527, lg: 597 } }}>
               {editoras.map(editora =>
                 <Box 
                   key={editora.id} 
@@ -96,7 +103,7 @@ export default function ListagemPage() {
                     }
                   }}>
                   <Button
-                    href="detalhe"
+                    href={`/detalhe/${editora.id}`}
                     styleSheet={{
                       alignItems: "flex-start",
                       flexGrow: 1,
@@ -105,7 +112,7 @@ export default function ListagemPage() {
                     {editora.nome}
                   </Button>
                   <Box styleSheet={{ flexDirection: "row", gap: 15 }}>
-                    <Button href="atualizacao" styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
+                    <Button href="/atualizacao" styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
                       <Icon styleSheet={{ width: 25, height: 25 }} viewBox={[25, 25]} />
                     </Button>
                     <Button onClick={() => excluir(editora.id)} styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
