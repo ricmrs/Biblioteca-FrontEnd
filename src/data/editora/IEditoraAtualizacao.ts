@@ -1,4 +1,4 @@
 interface IEditoraAtualizacao {
-  id: string;
+  id: number;
   nome: string;
 }
