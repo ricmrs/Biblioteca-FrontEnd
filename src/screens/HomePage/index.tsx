@@ -17,7 +17,7 @@ export default function HomePage() {
           backgroundColor: theme.colors.warning.x100
         }}
       >
-        <Form />
+        homepage
       </Box>
     </>
   )
