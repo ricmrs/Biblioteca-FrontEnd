@@ -2,22 +2,42 @@ import { useTheme } from "@/theme/ThemeProvider";
 import Box from "../Box";
 import Button from "../Button";
 import Text from "../Text";
-import Input from "../Input";
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useRouter } from "next/navigation";
+import Field, { FieldProps } from "../Field";
+import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 
-interface IForm {
+interface FormProps {
   title: string;
   buttonName: string;
-  onSubmit: (event: React.MouseEvent<HTMLButtonElement>, value: string, setValue: Dispatch<SetStateAction<string>>) => void;
+  fields: FieldProps[];
+  type: 'editora' | 'autor' | 'livro';
+  onSubmit: (dadosFormulario: IDadosFormulario) => void;
 }
 
-export default function Form({ title, buttonName, onSubmit }: IForm ){
+export default function Form({ title, buttonName, fields, type, onSubmit }: FormProps) {
   const theme = useTheme();
-  const [value, setValue] = useState('');
+  const router = useRouter();
+  
+  function montarDadosFormulario(event: React.MouseEvent<HTMLButtonElement>){
+    event.preventDefault();
+    let dadosFormulario = fields.reduce((prev, current) => ({...prev, [current.slug]: current.value.trim() || null}), {})
+    dadosFormulario = {...dadosFormulario, id: null}
+    onSubmit(dadosFormulario as IDadosFormulario);
+    limparCampos();
+  }
+
+  function limparCampos(){
+    fields.map(field => field.setValue(''));
+  }
+
+  function voltar(event: React.MouseEvent<HTMLButtonElement>){
+    event.preventDefault();
+    router.back();
+  }
 
   return (
-    <Box tag="form" 
-      styleSheet={{ 
+    <Box tag="form"
+      styleSheet={{
         padding: 30,
         gap: 30,
         borderRadius: 15,
@@ -26,24 +46,34 @@ export default function Form({ title, buttonName, onSubmit }: IForm ){
         justifyContent: "space-between"
       }}
     >
-      <Text tag="h1" variant="heading3">{title} - Editora</Text>
-      <Box styleSheet={{ gap: 10 }}>
-        <Text tag="label" htmlFor="nome">Nome</Text>
-        <Input id="nome" name="nome" value={value} onChange={event => setValue(event.target.value)}/>
+      <Text tag="h1" variant="heading3">{title} - {capitalizeFirstLetter(type)}</Text>
+      {fields.map(field => <Field key={field.name} slug={field.slug} name={field.name} value={field.value} setValue={field.setValue} type={field.type}/>)}
+      <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+        <Button
+          styleSheet={{
+            padding: 15,
+            borderRadius: 5,
+            width: "auto",
+            color: theme.colors.neutral.x050,
+            backgroundColor: theme.colors.warning.x500
+          }}
+          onClick={montarDadosFormulario}
+        >
+          {buttonName}
+        </Button>
+        <Button
+          styleSheet={{
+            padding: 15,
+            borderRadius: 5,
+            width: "auto",
+            color: theme.colors.neutral.x050,
+            backgroundColor: theme.colors.warning.x500
+          }}
+          onClick={voltar}
+        >
+          Voltar
+        </Button>
       </Box>
-      <Button 
-        styleSheet={{ 
-          padding: 15,
-          borderRadius: 5,
-          alignSelf: "center",
-          width: "auto",
-          color: theme.colors.neutral.x050,
-          backgroundColor: theme.colors.warning.x500 
-        }} 
-        onClick={event => onSubmit(event, value, setValue)}
-      >
-        {buttonName}
-      </Button>
     </Box>
   )
 }
