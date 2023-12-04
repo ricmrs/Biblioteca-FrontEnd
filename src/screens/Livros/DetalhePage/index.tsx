@@ -59,7 +59,7 @@ export default function DetalhePage() {
             <Text>Descrição: {livro?.descricao}</Text>
             <Text>Número de Páginas: {livro?.numeroPaginas}</Text>
             <Text>Idioma: {livro?.idioma}</Text>
-            <Text>Data de publicação: {livro?.dataPublicacao.toString()}</Text>
+            <Text>Data de publicação: {livro?.dataPublicacao.toLocaleDateString('pt-BR')}</Text>
             <Text>Preço: R${livro?.preco}</Text>
           </Box>
           <Button onClick={() => router.back()} colorVariant="warning" colorVariantEnabled styleSheet={{ padding: 5 }}>

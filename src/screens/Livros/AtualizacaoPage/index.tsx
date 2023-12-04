@@ -3,23 +3,23 @@ import { FieldProps } from "@/components/Field";
 import Form from "@/components/Form";
 import { livroService } from "@/services/livroService";
 import { useTheme } from "@/theme/ThemeProvider";
+import { getISODate } from "@/utils/getISODate";
 import Head from "next/head";
-import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function AtualizacaoPage() {
   const theme = useTheme();
   const service = livroService();
   const params = useParams();
-  const searchParams = useSearchParams();
-  const [titulo, setTitulo] = useState(searchParams.get('titulo') || '');
+  const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [numeroPaginas, setNumeroPaginas] = useState('');
+  const [numeroPaginas, setNumeroPaginas] = useState<number>();
   const [idioma, setIdioma] = useState('');
-  const [autorId, setAutorId] = useState('');
-  const [editoraId, setEditoraId] = useState('');
+  const [autorId, setAutorId] = useState<number>();
+  const [editoraId, setEditoraId] = useState<number>();
   const [dataPublicacao, setDataPublicacao] = useState('');
-  const [preco, setPreco] = useState('');
+  const [preco, setPreco] = useState<number>();
   const fields = [
     { name: 'Titulo', slug: 'titulo', value: titulo, setValue: setTitulo },
     { name: 'Descricao', slug: 'descricao', value: descricao, setValue: setDescricao },
@@ -37,6 +37,29 @@ export default function AtualizacaoPage() {
       try {
         const resposta = await service.atualizar(livro as ILivroAtualizacao);
         console.log("Livro atualizado com sucesso!");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  useEffect(() => {
+    buscarDadosLivro();
+  }, [])
+
+  async function buscarDadosLivro(){
+    if (params?.id) {
+      const id = parseInt(params.id as string);
+      try {
+        const livro = await service.detalhar(id);
+        setTitulo(livro.titulo);
+        setDescricao(livro.descricao);
+        setNumeroPaginas(livro.numeroPaginas);
+        setIdioma(livro.idioma);
+        setAutorId(livro.autor.id);
+        setEditoraId(livro.editora.id);
+        setDataPublicacao(getISODate(livro.dataPublicacao));
+        setPreco(livro.preco);
       } catch (err) {
         console.error(err);
       }

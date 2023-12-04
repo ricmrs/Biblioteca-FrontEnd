@@ -9,7 +9,7 @@ export function parseAutorDetalhe(data: IAutorDetalheJSON): IAutorDetalhe {
   return (
     {
       ...data,
-      livros: data.livros.map(livro => ({...livro, dataPublicacao: new Date(livro.dataPublicacao)}))
+      livros: data.livros.map(livro => ({...livro, dataPublicacao: new Date(`${livro.dataPublicacao}T00:00`)}))
     }
   )
 }

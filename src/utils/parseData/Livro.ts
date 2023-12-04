@@ -3,7 +3,7 @@ interface ILivroDetalheJSON extends Omit<ILivroDetalhe, 'dataPublicacao'>{
 }
 
 export function parseLivroDetalhe(data: ILivroDetalheJSON): ILivroDetalhe {
-  return ({...data, dataPublicacao: new Date(data.dataPublicacao)})
+  return ({...data, dataPublicacao: new Date(`${data.dataPublicacao}T00:00`)})
 }
 
 interface ILivroListagemDetalheJSON extends Omit<ILivroListagemDetalhe, 'dataPublicacao'>{
@@ -14,6 +14,6 @@ export function parseLivroListagem(data: IPagina<ILivroListagemDetalheJSON[]>): 
   return (
     {
       ...data, 
-      content: data.content.map(livro => ({...livro, dataPublicacao: new Date(livro.dataPublicacao)}))
+      content: data.content.map(livro => ({...livro, dataPublicacao: new Date(`${livro.dataPublicacao}T00:00`)}))
     })
 }
