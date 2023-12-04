@@ -1,14 +1,15 @@
 import Box from "@/components/Box";
-import Form from "@/components/Form";
+import Link from "@/components/Link";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
+import Card from "./Card";
 
 export default function HomePage() {
   const theme = useTheme();
 
   return (
     <>
-      <Head><title>Cadastro</title></Head>
+      <Head><title>Homepage</title></Head>
       <Box tag="main"
         styleSheet={{
           flex: 1,
@@ -17,7 +18,11 @@ export default function HomePage() {
           backgroundColor: theme.colors.warning.x100
         }}
       >
-        homepage
+        <Box styleSheet={{ flexDirection: "row", gap: 10 }}>
+          <Card href="/editoras/listagem?page=1" title="Editoras" />
+          <Card href="/autores/listagem?page=1" title="Autores" />
+          <Card href="/livros/listagem?page=1" title="Livros" />
+        </Box>
       </Box>
     </>
   )
