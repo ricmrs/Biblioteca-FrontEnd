@@ -20,7 +20,11 @@ export default function Form({ title, buttonName, fields, type, onSubmit }: Form
   
   function montarDadosFormulario(event: React.MouseEvent<HTMLButtonElement>){
     event.preventDefault();
-    let dadosFormulario = fields.reduce((prev, current) => ({...prev, [current.slug]: current.value.trim() || null}), {})
+    let dadosFormulario = fields.reduce((prev, current) => (
+      {
+        ...prev, 
+        [current.slug]: ((typeof current.value === 'string' ? current.value.trim() : current.value) || null)
+      }), {})
     dadosFormulario = {...dadosFormulario, id: null}
     onSubmit(dadosFormulario as IDadosFormulario);
     limparCampos();
