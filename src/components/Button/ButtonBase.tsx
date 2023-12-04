@@ -4,6 +4,7 @@ import { ThemeTypographyVariants } from "@/theme/theme";
 import Text from "../Text";
 import { StyleSheet } from "@/theme/StyleSheet";
 import { useRouter } from "next/router";
+import { useTheme } from "@/theme/ThemeProvider";
 
 const StyledButton = styled(Text)<any>``;
 
@@ -21,10 +22,12 @@ export default function ButtonBase({
   href,
   ...props
 }: ButtonBaseProps) {
+  const theme = useTheme();
   const router = useRouter();
   const ref = React.useRef();
   const isLink = Boolean(href);
   const Tag = isLink ? 'a' : 'button';
+  const textStyles = theme.typography.variants[textVariant!];
   
   return (  
     <StyledButton
@@ -38,6 +41,7 @@ export default function ButtonBase({
         outline: '0',
         cursor: 'pointer',
         textDecoration: 'none',
+        ...textStyles,
         ...styleSheet
       }}
       {...props}
