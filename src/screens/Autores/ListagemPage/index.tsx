@@ -135,7 +135,7 @@ export default function ListagemPage() {
                       {autor.nome}
                     </Button>
                     <Box styleSheet={{ flexDirection: "row", gap: 15 }}>
-                      <Button href={`atualizacao/${autor.id}?nome=${encodeURIComponent(autor.nome)}`} styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
+                      <Button href={`atualizacao/${autor.id}`} styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
                         <Icon styleSheet={{ width: 25, height: 25 }} viewBox={[25, 25]} />
                       </Button>
                       <Button onClick={() => excluir(autor.id)} styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
