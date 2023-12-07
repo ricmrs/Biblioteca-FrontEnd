@@ -120,9 +120,6 @@ export default function ListagemPage() {
                     hover: {
                       backgroundColor: theme.colors.warning.x400,
                       transform: "none"
-                    },
-                    focus: {
-                      backgroundColor: theme.colors.warning.x600,
                     }
                   }}>
                   <Button
@@ -135,24 +132,27 @@ export default function ListagemPage() {
                       lineHeight: { xs: "25px", md: "30px" },
                       overflow: "hidden",
                       whiteSpace: "nowrap",
-                      textOverflow: "ellipsis"
+                      textOverflow: "ellipsis",
+                      focus: {
+                        color: theme.colors.warning.x600,
+                      }
                     }}
                     textVariant="heading4"
                   >
                     {autor.nome}
                   </Button>
                   <Box styleSheet={{ flexDirection: "row", gap: 15 }}>
-                    <Button href={`atualizacao/${autor.id}`} styleSheet={{ width: { xs: 25, md: 30 }, height: { xs: 25, md: 30 }, alignSelf: "center" }} colorVariantEnabled={false}>
+                    <Button href={`atualizacao/${autor.id}`} styleSheet={{ width: { xs: 25, md: 30 }, height: { xs: 25, md: 30 }, alignSelf: "center", focus: { border: "2px dotted #FFF" } }} colorVariantEnabled={false}>
                       <Icon styleSheet={{ width: { xs: 25, md: 30 }, height: { xs: 25, md: 30 } }} viewBox={[64, 64]} name="pencil" />
                     </Button>
-                    <Button onClick={() => excluir(autor.id)} styleSheet={{ width: { xs: 22, md: 25 }, height: { xs: 22, md: 25 }, alignSelf: "center" }} colorVariantEnabled={false}>
+                    <Button onClick={() => excluir(autor.id)} styleSheet={{ width: { xs: 25, md: 25 }, height: { xs: 25, md: 25 }, alignSelf: "center", focus: { border: "2px dotted #FFF" } }} colorVariantEnabled={false}>
                       <Icon styleSheet={{ width: { xs: 22, md: 25 }, height: { xs: 22, md: 25 } }} viewBox={[64, 64]} name="lixeira" />
                     </Button>
                   </Box>
                 </Box>
               )}
             </Box>
-            <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", marginTop: { xs: 12, md: 15, xl: 20} }}>
+            <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", marginTop: { xs: 12, md: 15, xl: 20 } }}>
               <Button
                 colorVariant="warning"
                 colorVariantEnabled

@@ -120,9 +120,6 @@ export default function ListagemPage() {
                     hover: {
                       backgroundColor: theme.colors.positive.x400,
                       transform: "none"
-                    },
-                    focus: {
-                      backgroundColor: theme.colors.positive.x600,
                     }
                   }}>
                   <Button
@@ -135,18 +132,19 @@ export default function ListagemPage() {
                       lineHeight: { xs: "25px", md: "30px" },
                       overflow: "hidden",
                       whiteSpace: "nowrap",
-                      textOverflow: "ellipsis"
+                      textOverflow: "ellipsis",
+                      focus: {
+                        color: theme.colors.positive.x600,
+                      }
                     }}
                     textVariant="heading4"
                   >
                     {livro.titulo}
                   </Button>
                   <Box styleSheet={{ flexDirection: "row", gap: 10 }}>
-                    <Button href={`atualizacao/${livro.id}`} styleSheet={{ width: {xs:25,md:30}, height: {xs:25,md:30}, alignSelf: "center" }} colorVariantEnabled={false}>
-                      <Icon styleSheet={{ width: {xs:25,md:30}, height: {xs:25,md:30} }} viewBox={[64, 64]} name="pencil"/>
+                  <Button href={`atualizacao/${livro.id}`} styleSheet={{width: {xs:25,md:30}, height: {xs:25,md:30}, alignSelf: "center", focus: {border:"2px dotted #FFF"}}} colorVariantEnabled={false}>                      <Icon styleSheet={{ width: {xs:25,md:30}, height: {xs:25,md:30} }} viewBox={[64, 64]} name="pencil"/>
                     </Button>
-                    <Button onClick={() => excluir(livro.id)} styleSheet={{ width: {xs:22,md:25}, height: {xs:22,md:25}, alignSelf: "center" }} colorVariantEnabled={false}>
-                      <Icon styleSheet={{ width: {xs:22,md:25}, height: {xs:22,md:25} }} viewBox={[64, 64]} name="lixeira"/>
+                    <Button onClick={() => excluir(livro.id)} styleSheet={{width: {xs:25,md:25}, height: {xs:25,md:25}, alignSelf: "center", focus: {border:"2px dotted #FFF"}}} colorVariantEnabled={false}>                      <Icon styleSheet={{ width: {xs:22,md:25}, height: {xs:22,md:25} }} viewBox={[64, 64]} name="lixeira"/>
                     </Button>
                   </Box>
                 </Box>
