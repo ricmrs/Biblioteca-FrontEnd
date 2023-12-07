@@ -69,13 +69,13 @@ export default function ListagemPage() {
           alignItems: "center",
           justifyContent: "center",
           padding: 25,
-          backgroundColor: theme.colors.warning.x100
+          backgroundColor: theme.colors.positive.x200
         }}
       >
         <Box
           styleSheet={{
-            width: "80%",
-            padding: 20,
+            width: { xs: "95%", md: "80%" },
+            padding: { xs: 15, md: 20 },
             paddingBottom: 25,
             gap: 15,
             borderRadius: 15,
@@ -85,36 +85,37 @@ export default function ListagemPage() {
         >
           <Text tag="h1" variant="heading3">Livros</Text>
           <Box styleSheet={{ width: "100%" }}>
-          <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12 }}>
+          <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", marginBottom: { xs: 12, md: 15, xl: 20 } }}>
               <Button
                 href="/"
-                colorVariant="warning"
+                colorVariant="positive"
                 colorVariantEnabled
-                styleSheet={{ width: { md: 29, lg: 36 }, height: { md: 29, lg: 36 }, alignSelf: "center" }}
+                styleSheet={{ width: { xs: 30, md: 35, xl: 40 }, height: { xs: 30, md: 35, xl: 40 }, alignSelf: "center", borderRadius: "100%" }}
               >
-                <Icon styleSheet={{ width: 25, height: 25 }} viewBox={[25, 25]} />
+                <Icon styleSheet={{ width: 20, height: 20 }} viewBox={[50, 50]} name="home"/>
               </Button>
               <Button
                 href="cadastro"
-                colorVariant="warning"
+                colorVariant="positive"
                 textVariant="heading4"
                 colorVariantEnabled
-                styleSheet={{ paddingVertical: 2, paddingHorizontal: 5 }}
+                styleSheet={{ paddingHorizontal: 8, height: { xs: 30, md: 35, xl: 40 } }}
               >
                 Cadastro
               </Button>
             </Box>
-            <Box styleSheet={{ gap: 5, height: { md: 527, lg: 461 } }}>
+            <Box styleSheet={{ gap: { xs: 5, md: 10 }, height: { xs: 356, md: 463 } }}>
               {livros.map(livro =>
                 <Box
                   key={livro.id}
                   styleSheet={{
                     flexDirection: "row",
                     gap: 10,
-                    paddingVertical: 6,
+                    paddingVertical: { xs: 6, md: 8 },
                     paddingHorizontal: 10,
+                    width: "100%",
                     border: "2px solid #000",
-                    backgroundColor: theme.colors.positive.x500,
+                    backgroundColor: theme.colors.positive.x300,
                     color: theme.colors.neutral.x000,
                     hover: {
                       backgroundColor: theme.colors.positive.x400,
@@ -128,27 +129,32 @@ export default function ListagemPage() {
                     href={`detalhe/${livro.id}`}
                     styleSheet={{
                       alignItems: "flex-start",
+                      flexShrink: 1,
                       flexGrow: 1,
-                      
+                      display: "block",
+                      lineHeight: { xs: "25px", md: "30px" },
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis"
                     }}
                     textVariant="heading4"
                   >
                     {livro.titulo}
                   </Button>
-                  <Box styleSheet={{ flexDirection: "row", gap: 15 }}>
-                    <Button href={`atualizacao/${livro.id}`} styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
-                      <Icon styleSheet={{ width: 25, height: 25 }} viewBox={[25, 25]} />
+                  <Box styleSheet={{ flexDirection: "row", gap: 10 }}>
+                    <Button href={`atualizacao/${livro.id}`} styleSheet={{ width: {xs:25,md:30}, height: {xs:25,md:30}, alignSelf: "center" }} colorVariantEnabled={false}>
+                      <Icon styleSheet={{ width: {xs:25,md:30}, height: {xs:25,md:30} }} viewBox={[64, 64]} name="pencil"/>
                     </Button>
-                    <Button onClick={() => excluir(livro.id)} styleSheet={{ width: 25, height: 25, alignSelf: "center" }} colorVariantEnabled={false}>
-                      <Icon styleSheet={{ width: 25, height: 25 }} viewBox={[25, 25]} />
+                    <Button onClick={() => excluir(livro.id)} styleSheet={{ width: {xs:22,md:25}, height: {xs:22,md:25}, alignSelf: "center" }} colorVariantEnabled={false}>
+                      <Icon styleSheet={{ width: {xs:22,md:25}, height: {xs:22,md:25} }} viewBox={[64, 64]} name="lixeira"/>
                     </Button>
                   </Box>
                 </Box>
               )}
             </Box>
-            <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", marginTop: 12 }}>
+            <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", marginTop: { xs: 12, md: 15, xl: 20} }}>
               <Button
-                colorVariant="warning"
+                colorVariant="positive"
                 colorVariantEnabled
                 textVariant="heading4"
                 onClick={voltarPagina}
@@ -157,7 +163,7 @@ export default function ListagemPage() {
                 Voltar
               </Button>
               <Button
-                colorVariant="warning"
+                colorVariant="positive"
                 colorVariantEnabled
                 textVariant="heading4"
                 onClick={avancarPagina}

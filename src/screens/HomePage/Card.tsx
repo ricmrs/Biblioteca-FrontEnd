@@ -1,22 +1,24 @@
 import Button from "@/components/Button";
-import Link from "@/components/Link";
+import { ColorVariant } from "@/components/Button/colorVariantBy";
 import { useTheme } from "@/theme/ThemeProvider";
 
 interface CardProps {
   title: string;
   href: string;
+  colorVariant: ColorVariant;
 }
 
-export default function Card({ title, href }: CardProps) {
+export default function Card({ title, href, colorVariant }: CardProps) {
   const theme = useTheme();
   return (
     <Button 
       href={href}
-      colorVariant="warning"
+      colorVariant={colorVariant}
       colorVariantEnabled
       styleSheet={{
-        padding: 20,
-        border: `3px solid ${theme.colors.warning.x300}`
+        padding: 25,
+        fontSize: { xs: 24, md: 32 },
+        border: `3px solid ${theme.colors[colorVariant].x300}`
       }}
     >
       {title}

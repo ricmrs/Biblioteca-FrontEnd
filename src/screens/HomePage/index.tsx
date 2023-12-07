@@ -1,8 +1,8 @@
 import Box from "@/components/Box";
-import Link from "@/components/Link";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
 import Card from "./Card";
+import Text from "@/components/Text";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -15,13 +15,15 @@ export default function HomePage() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: theme.colors.warning.x100
+          gap: 80,
+          backgroundColor: theme.colors.accent.x100
         }}
       >
-        <Box styleSheet={{ flexDirection: "row", gap: 10 }}>
-          <Card href="/editoras/listagem?page=1" title="Editoras" />
-          <Card href="/autores/listagem?page=1" title="Autores" />
-          <Card href="/livros/listagem?page=1" title="Livros" />
+        <Text styleSheet={{ fontSize: 50, color: theme.colors.warning.x900 }}>Entidades</Text>
+        <Box styleSheet={{ flexDirection: { xs: "column", md: "row" }, gap: {  xs: 20, md: 30 } }}>
+          <Card href="/editoras/listagem?page=1" title="Editoras" colorVariant="negative" />
+          <Card href="/autores/listagem?page=1" title="Autores" colorVariant="warning"/>
+          <Card href="/livros/listagem?page=1" title="Livros" colorVariant="positive"/>
         </Box>
       </Box>
     </>
