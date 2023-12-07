@@ -19,3 +19,6 @@ export { default as nextjs } from './nextjs';
 export { default as wordpress } from './wordpress';
 export { default as mysql } from './mysql';
 export { default as java } from './java';
+export { default as home } from './home';
+export { default as pencil } from './pencil';
+export { default as lixeira } from './lixeira';
