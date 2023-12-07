@@ -20,7 +20,7 @@ export function editoraService(){
         .catch(err => { throw new Error('Não foi possível detalhar a editora') });
     },
     listarTodas: async (pagina: number): Promise<IPagina<IEditoraListagem>> => {
-      return await fetch(`${BASE_URL}/editoras?page=${pagina}`, 
+      return await fetch(`${BASE_URL}/editoras?page=${pagina}&size=8`, 
         { 
           method: "GET", 
           headers: {"Content-type": "application/json"} 
