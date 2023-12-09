@@ -5,16 +5,18 @@ import Text from "../Text";
 import { useRouter } from "next/navigation";
 import Field, { FieldProps } from "../Field";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
+import { ColorVariant } from "../Button/colorVariantBy";
 
 interface FormProps {
   title: string;
   buttonName: string;
+  buttonColor: ColorVariant;
   fields: FieldProps[];
   type: 'editora' | 'autor' | 'livro';
   onSubmit: (dadosFormulario: IDadosFormulario) => void;
 }
 
-export default function Form({ title, buttonName, fields, type, onSubmit }: FormProps) {
+export default function Form({ title, buttonName, buttonColor, fields, type, onSubmit }: FormProps) {
   const theme = useTheme();
   const router = useRouter();
   
@@ -50,34 +52,48 @@ export default function Form({ title, buttonName, fields, type, onSubmit }: Form
         justifyContent: "space-between"
       }}
     >
-      <Text tag="h1" variant="heading3">{title} - {capitalizeFirstLetter(type)}</Text>
-      {fields.map(field => <Field key={field.name} slug={field.slug} name={field.name} value={field.value} setValue={field.setValue} type={field.type}/>)}
+      <Text tag="h1" variant="heading2">{title} - {capitalizeFirstLetter(type)}</Text>
+      {fields.map(field => 
+        <Field 
+          key={field.name} 
+          slug={field.slug} 
+          name={field.name} 
+          value={field.value} 
+          setValue={field.setValue} 
+          type={field.type}
+        />)}
       <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
         <Button
           styleSheet={{
-            padding: 15,
+            paddingVertical: { xs: 8, md: 8, xl: 5},
+            paddingHorizontal: { xs: 5, md: 8, xl: 10 },
             borderRadius: 5,
-            width: "auto",
-            color: theme.colors.neutral.x050,
-            backgroundColor: theme.colors.warning.x500
           }}
-          onClick={montarDadosFormulario}
-        >
-          {buttonName}
-        </Button>
-        <Button
-          styleSheet={{
-            padding: 15,
-            borderRadius: 5,
-            width: "auto",
-            color: theme.colors.neutral.x050,
-            backgroundColor: theme.colors.warning.x500
-          }}
+          colorVariant={buttonColor}
+          colorVariantEnabled
           onClick={voltar}
         >
           Voltar
+        </Button>
+        <Button
+          styleSheet={{
+            paddingVertical: { xs: 8, md: 8, xl: 5},
+            paddingHorizontal: { xs: 5, md: 8, xl: 10 },
+            borderRadius: 5,
+          }}
+          colorVariant={buttonColor}
+          colorVariantEnabled
+          onClick={montarDadosFormulario}
+        >
+          {buttonName}
         </Button>
       </Box>
     </Box>
   )
 }
+
+Form.displayName = "Form";
+
+Form.defaultProps = {
+  buttonColor: "primary"
+};

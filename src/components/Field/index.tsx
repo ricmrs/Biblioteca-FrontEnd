@@ -1,4 +1,3 @@
-import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import Box from "../Box";
 import Input from "../Input";
 import Text from "../Text";
@@ -15,8 +14,21 @@ import { Dispatch, SetStateAction } from 'react';
 export default function Field({ name, slug, value, setValue, type }: FieldProps) {
   return (
     <Box styleSheet={{ gap: 10, width: "100%" }}>
-      <Text tag="label" htmlFor={slug}>{name}</Text>
-      <Input id={slug} name={slug} value={value} type={type} onChange={event => setValue(event.target.value)} />
+      <Text 
+        tag="label" 
+        htmlFor={slug}
+        styleSheet={{ fontSize: { xs: 22, md: 24, xl: 28 }}}
+      >
+        {name}
+      </Text>
+      <Input 
+        id={slug} 
+        name={slug} 
+        value={value}
+        styleSheet={{ paddingVertical: 2, paddingHorizontal: 5 }}
+        type={type} 
+        onChange={event => setValue(event.target.value)}
+      />
     </Box>
   )
 }

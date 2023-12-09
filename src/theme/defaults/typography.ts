@@ -18,10 +18,10 @@ export const typography = {
       },
     },
     heading2: {
-      fontFamily: "'Press Start 2P', sans-serif",
+      fontFamily: "'Fira Code', sans-serif",
       fontSize: {
-        xs: "20px",
-        md: "24px",
+        xs: "24px",
+        md: "30px",
         xl: "36px"
       }
     },
@@ -45,16 +45,16 @@ export const typography = {
     heading5: {
       fontFamily: "'Fira Code', sans-serif",
       fontSize: {
-        xs: "14px",
-        md: "16px",
-        xl: "16px"
+        xs: "20px",
+        md: "22px",
+        xl: "28px"
       }
     },
     body: {
       fontFamily: "'Fira Code', sans-serif",
       fontSize: {
         xs: "18px",
-        md: "18px",
+        md: "20px",
         xl: "24px"
       }
     },
