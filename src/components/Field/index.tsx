@@ -25,7 +25,7 @@ export default function Field({ name, slug, value, setValue, type }: FieldProps)
         id={slug} 
         name={slug} 
         value={value}
-        styleSheet={{ paddingVertical: 2, paddingHorizontal: 5 }}
+        styleSheet={{ paddingVertical: 5, paddingHorizontal: 5 }}
         type={type} 
         onChange={event => setValue(event.target.value)}
       />
