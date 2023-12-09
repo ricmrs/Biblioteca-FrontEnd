@@ -18,6 +18,7 @@ export default function CadastroPage() {
   async function cadastrar(dados: IDadosFormulario) {
     try {
       const resposta = await service.cadastrar(dados as IAutorCadastro);
+      console.log('resposta autor', resposta)
       if ((Array.isArray(resposta))) {
         resposta.map(res => console.log(`O campo ${res.campo} ${res.mensagem}`))
       }
@@ -34,13 +35,14 @@ export default function CadastroPage() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: theme.colors.warning.x100
+          backgroundColor: theme.colors.warning.x200
         }}
       >
         <Form
           type="autor"
           title="Cadastro"
           buttonName="Cadastrar"
+          buttonColor="warning"
           fields={fields}
           onSubmit={cadastrar}
         />
