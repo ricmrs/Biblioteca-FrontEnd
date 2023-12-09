@@ -99,7 +99,7 @@ export default function DetalhePage() {
             <Text variant="heading5" styleSheet={gridLabelStyles}>Data de Publicação</Text>
             <Text variant="body" styleSheet={gridStyles}>{livro?.dataPublicacao.toLocaleDateString('pt-BR')}</Text>
             <Text variant="heading5" styleSheet={gridLabelStyles}>Preço</Text>
-            <Text variant="body" styleSheet={gridStyles}>{livro?.preco}</Text>
+            <Text variant="body" styleSheet={gridStyles}>{livro?.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
             
           </Box>
           <Button onClick={() => router.back()} colorVariant="positive" colorVariantEnabled styleSheet={{ padding: 5 }}>
