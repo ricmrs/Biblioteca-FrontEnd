@@ -68,16 +68,24 @@ export default function AtualizacaoPage() {
 
   return (
     <>
-      <Head><title>Atualizacao - Livros</title></Head>
+      <Head><title>Atualização - Livros</title></Head>
       <Box tag="main"
         styleSheet={{
           flex: 1,
+          padding: { xs: 0, md: 20 },
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: theme.colors.warning.x100
+          backgroundColor: theme.colors.positive.x200
         }}
       >
-        <Form title="Atualização" buttonName="Atualizar" type="livro" fields={fields} onSubmit={atualizar} />
+        <Form 
+          title="Atualização" 
+          buttonName="Atualizar"
+          color="positive" 
+          type="livro" 
+          fields={fields} 
+          onSubmit={atualizar} 
+        />
       </Box>
     </>
   )

@@ -68,17 +68,17 @@ export default function ListagemPage() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          padding: 25,
+          padding: { xs: 0, md: 25},
           backgroundColor: theme.colors.positive.x200
         }}
       >
         <Box
           styleSheet={{
-            width: { xs: "95%", md: "80%" },
-            padding: { xs: 15, md: 20 },
+            width: { xs: "100%", md: "80%" },
+            padding: 20,
             paddingBottom: 25,
-            gap: 15,
-            borderRadius: 15,
+            gap: { xs: 20, md: 15},
+            borderRadius: { xs: 0, md: 15},
             alignItems: "center",
             backgroundColor: theme.colors.neutral.x050
           }}
@@ -104,7 +104,7 @@ export default function ListagemPage() {
                 Cadastro
               </Button>
             </Box>
-            <Box styleSheet={{ gap: { xs: 5, md: 10 }, height: { xs: 356, md: 463 } }}>
+            <Box styleSheet={{ gap: { xs: 8, md: 10 }, height: { xs: 378, md: 463 } }}>
               {livros.map(livro =>
                 <Box
                   key={livro.id}
