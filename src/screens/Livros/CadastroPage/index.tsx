@@ -47,7 +47,7 @@ export default function CadastroPage() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          padding: 20,
+          padding: { xs: 0, md: 20 },
           backgroundColor: theme.colors.positive.x200
         }}
       >
@@ -55,7 +55,7 @@ export default function CadastroPage() {
           type="livro"
           title="Cadastro"
           buttonName="Cadastrar"
-          buttonColor="positive"
+          color="positive"
           fields={fields}
           onSubmit={cadastrar}
         />

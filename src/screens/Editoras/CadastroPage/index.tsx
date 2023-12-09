@@ -16,10 +16,10 @@ export default function CadastroPage() {
     try {
       const resposta = await service.cadastrar(dados as IEditoraCadastro);
       console.log(resposta)
-      if((Array.isArray(resposta))){
+      if ((Array.isArray(resposta))) {
         resposta.map(res => console.log(`O campo ${res.campo} ${res.mensagem}`))
       }
-    } catch (err){
+    } catch (err) {
       console.error(err)
     }
   }
@@ -32,6 +32,7 @@ export default function CadastroPage() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
+          padding: { xs: 0, md: 20 },
           backgroundColor: theme.colors.negative.x200
         }}
       >
@@ -39,7 +40,7 @@ export default function CadastroPage() {
           type="editora"
           title="Cadastro"
           buttonName="Cadastrar"
-          buttonColor="negative"
+          color="negative"
           fields={fields}
           onSubmit={cadastrar}
         />

@@ -33,6 +33,7 @@ export default function CadastroPage() {
       <Box tag="main"
         styleSheet={{
           flex: 1,
+          padding: { xs: 0, md: 20 },
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: theme.colors.warning.x200
@@ -42,7 +43,7 @@ export default function CadastroPage() {
           type="autor"
           title="Cadastro"
           buttonName="Cadastrar"
-          buttonColor="warning"
+          color="warning"
           fields={fields}
           onSubmit={cadastrar}
         />

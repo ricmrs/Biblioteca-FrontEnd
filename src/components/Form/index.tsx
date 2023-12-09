@@ -10,13 +10,13 @@ import { ColorVariant } from "../Button/colorVariantBy";
 interface FormProps {
   title: string;
   buttonName: string;
-  buttonColor: ColorVariant;
+  color: ColorVariant;
   fields: FieldProps[];
   type: 'editora' | 'autor' | 'livro';
   onSubmit: (dadosFormulario: IDadosFormulario) => void;
 }
 
-export default function Form({ title, buttonName, buttonColor, fields, type, onSubmit }: FormProps) {
+export default function Form({ title, buttonName, color, fields, type, onSubmit }: FormProps) {
   const theme = useTheme();
   const router = useRouter();
   
@@ -44,10 +44,11 @@ export default function Form({ title, buttonName, buttonColor, fields, type, onS
   return (
     <Box tag="form"
       styleSheet={{
+        width: { xs: "100%", md: "80%" },
         padding: 30,
         gap: 30,
-        borderRadius: 15,
-        backgroundColor: theme.colors.neutral.x050,
+        borderRadius: { xs: 0, md: 15 },
+        backgroundColor: { xs: theme.colors[color].x100, md: theme.colors.neutral.x050 },
         alignItems: "center",
         justifyContent: "space-between"
       }}
@@ -69,7 +70,7 @@ export default function Form({ title, buttonName, buttonColor, fields, type, onS
             paddingHorizontal: { xs: 5, md: 8, xl: 10 },
             borderRadius: 5,
           }}
-          colorVariant={buttonColor}
+          colorVariant={color}
           colorVariantEnabled
           onClick={voltar}
         >
@@ -81,7 +82,7 @@ export default function Form({ title, buttonName, buttonColor, fields, type, onS
             paddingHorizontal: { xs: 5, md: 8, xl: 10 },
             borderRadius: 5,
           }}
-          colorVariant={buttonColor}
+          colorVariant={color}
           colorVariantEnabled
           onClick={montarDadosFormulario}
         >
