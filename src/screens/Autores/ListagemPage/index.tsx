@@ -4,10 +4,12 @@ import Icon from "@/components/Icon";
 import Text from "@/components/Text";
 import { autorService } from "@/services/autorService";
 import { useTheme } from "@/theme/ThemeProvider";
+import { CircularProgress } from "@mui/material";
 import Head from "next/head";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from 'react';
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ListagemPage() {
   const theme = useTheme();
@@ -19,23 +21,22 @@ export default function ListagemPage() {
   const [autores, setAutores] = useState<IAutorListagem>([]);
   const [primeiraPagina, setPrimeiraPagina] = useState<boolean>();
   const [ultimaPagina, setUltimaPagina] = useState<boolean>();
+  const [vazio, setVazio] = useState<boolean>(true);
 
   useEffect(() => {
     if (page) {
-      try {
-        carregaDadosAutores();
-      } catch (err) {
-        console.error(err);
-      }
+      carregaDadosAutores();
     }
   }, [page])
 
   async function carregaDadosAutores() {
     const numPage = parseInt(page as string) - 1;
-    const paginaAutores = await service.listarTodas(numPage);
-    setAutores(paginaAutores.content)
-    setPrimeiraPagina(paginaAutores.first);
-    setUltimaPagina(paginaAutores.last);
+    const resposta = await service.listarTodas(numPage);
+    if (resposta.empty) router.push('listagem/page-error-404');
+    setAutores(resposta.content);
+    setPrimeiraPagina(resposta.first);
+    setUltimaPagina(resposta.last);
+    setVazio(resposta.empty);
   }
 
   function voltarPagina() {
@@ -50,13 +51,15 @@ export default function ListagemPage() {
     router.push(`?page=${numPage}`);
   }
 
-  async function excluir(id: number) {
+  async function excluir(id: number, nome: string) {
     try {
-      await service.deletar(id);
+      const resposta = await service.deletar(id, nome);
+      resposta.mensagens.map(res => {
+        resposta.ok ? toast.success(res) : toast.error(res);
+      })
       carregaDadosAutores();
-      console.log("Autor excluído com sucesso");
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      if (e instanceof Error) toast.error(e.message);
     }
   }
 
@@ -68,17 +71,18 @@ export default function ListagemPage() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          padding: { xs: 0, md: 25},
+          padding: { xs: 0, md: 25 },
           backgroundColor: theme.colors.warning.x200
         }}
       >
+        <Toaster />
         <Box
           styleSheet={{
             width: { xs: "100%", md: "80%" },
             padding: 20,
             paddingBottom: 25,
-            gap: { xs: 20, md: 15},
-            borderRadius: { xs: 0, md: 15},
+            gap: { xs: 20, md: 15 },
+            borderRadius: { xs: 0, md: 15 },
             alignItems: "center",
             backgroundColor: theme.colors.neutral.x050
           }}
@@ -105,6 +109,18 @@ export default function ListagemPage() {
               </Button>
             </Box>
             <Box styleSheet={{ gap: { xs: 8, md: 10 }, height: { xs: 378, md: 463 } }}>
+              {vazio && Array(8).fill('').map((el, i) => (
+                <Box key={i}
+                  styleSheet={{
+                    backgroundColor: theme.colors.warning.x100,
+                    alignItems: "center",
+                    paddingVertical: { xs: 8, md: 12 },
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  <CircularProgress size={25} color="warning" />
+                </Box>
+              ))}
               {autores.map(autor =>
                 <Box
                   key={autor.id}
@@ -145,7 +161,7 @@ export default function ListagemPage() {
                     <Button href={`atualizacao/${autor.id}`} styleSheet={{ width: { xs: 25, md: 30 }, height: { xs: 25, md: 30 }, alignSelf: "center", focus: { border: "2px dotted #FFF" } }} colorVariantEnabled={false}>
                       <Icon styleSheet={{ width: { xs: 25, md: 30 }, height: { xs: 25, md: 30 } }} viewBox={[64, 64]} name="pencil" />
                     </Button>
-                    <Button onClick={() => excluir(autor.id)} styleSheet={{ width: { xs: 25, md: 25 }, height: { xs: 25, md: 25 }, alignSelf: "center", focus: { border: "2px dotted #FFF" } }} colorVariantEnabled={false}>
+                    <Button onClick={() => excluir(autor.id, autor.nome)} styleSheet={{ width: { xs: 25, md: 25 }, height: { xs: 25, md: 25 }, alignSelf: "center", focus: { border: "2px dotted #FFF" } }} colorVariantEnabled={false}>
                       <Icon styleSheet={{ width: { xs: 22, md: 25 }, height: { xs: 22, md: 25 } }} viewBox={[64, 64]} name="lixeira" />
                     </Button>
                   </Box>

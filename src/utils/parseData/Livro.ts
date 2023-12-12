@@ -1,8 +1,4 @@
-interface ILivroDetalheJSON extends Omit<ILivroDetalhe, 'dataPublicacao'>{
-  dataPublicacao: string;
-}
-
-export function parseLivroDetalhe(data: ILivroDetalheJSON): ILivroDetalhe {
+export function parseLivroDetalhe(data: ILivroDetalheJson): ILivroDetalhe {
   return ({...data, dataPublicacao: new Date(`${data.dataPublicacao}T00:00`)})
 }
 

@@ -5,6 +5,7 @@ import { editoraService } from "@/services/editoraService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function CadastroPage() {
   const theme = useTheme();
@@ -15,12 +16,11 @@ export default function CadastroPage() {
   async function cadastrar(dados: IDadosFormulario) {
     try {
       const resposta = await service.cadastrar(dados as IEditoraCadastro);
-      console.log(resposta)
-      if ((Array.isArray(resposta))) {
-        resposta.map(res => console.log(`O campo ${res.campo} ${res.mensagem}`))
-      }
-    } catch (err) {
-      console.error(err)
+      resposta.mensagens.map(mensagem => {
+        resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
+      })
+    } catch (e) {
+      if (e instanceof Error) toast.error(e.message);
     }
   }
 
@@ -36,6 +36,7 @@ export default function CadastroPage() {
           backgroundColor: theme.colors.negative.x200
         }}
       >
+        <Toaster />
         <Form
           type="editora"
           title="Cadastro"

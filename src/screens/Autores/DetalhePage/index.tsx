@@ -1,34 +1,15 @@
 import Box from "@/components/Box";
 import Button from "@/components/Button";
 import Text from "@/components/Text";
-import { autorService } from "@/services/autorService";
 import { useTheme } from "@/theme/ThemeProvider";
+import { parseAutor } from "@/utils/parseData/parseJson";
 import Head from "next/head";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-export default function DetalhePage() {
+export default function DetalhePage({ autorJson }: { autorJson: IAutorDetalheJson }) { 
   const theme = useTheme();
-  const service = autorService();
-  const params = useParams();
   const router = useRouter();
-  const [autor, setAutor] = useState<IAutorDetalhe>();
-
-  useEffect(() => {
-    if (params?.id) {
-      try {
-        carregaDadosAutor(params.id as unknown as number);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }, [params?.id])
-
-  async function carregaDadosAutor(id: number) {
-    const autor = await service.detalhar(id);
-    setAutor(autor);
-  }
+  const autor = parseAutor.fromJSON(autorJson);
 
   const gridStyles = {
     backgroundColor: theme.colors.warning.x050,
@@ -88,7 +69,12 @@ export default function DetalhePage() {
                   {autor!.livros.map(livro =>
                     <Box key={livro.id} styleSheet={{ gap: 3, flexDirection: "row" }}>
                       <Text variant="body" styleSheet={{ ...gridStyles, flexShrink: 1, flexGrow: 1 }}>{livro.titulo}</Text>
-                      <Text variant="body" styleSheet={{ ...gridStyles, textAlign: "center", width: { xs: 130, md: 150, xl: 200 }}}>{livro.dataPublicacao.toLocaleDateString('pt-BR')}</Text>
+                      <Text 
+                        variant="body" 
+                        styleSheet={{ ...gridStyles, textAlign: "center", width: { xs: 130, md: 150, xl: 200 }}}
+                      >
+                        {livro.dataPublicacao.toLocaleDateString('pt-BR')}
+                      </Text>
                     </Box>)}
                 </Box>
               </>

@@ -1,34 +1,15 @@
 import Box from "@/components/Box";
 import Button from "@/components/Button";
 import Text from "@/components/Text";
-import { livroService } from "@/services/livroService";
 import { useTheme } from "@/theme/ThemeProvider";
+import { parseLivro } from "@/utils/parseData/parseJson";
 import Head from "next/head";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-export default function DetalhePage() {
+export default function DetalhePage({ livroJson }: { livroJson: ILivroDetalheJson }) { 
   const theme = useTheme();
-  const service = livroService();
-  const params = useParams();
   const router = useRouter();
-  const [livro, setLivro] = useState<ILivroDetalhe>();
-
-  useEffect(() => {
-    if (params?.id) {
-      try {
-        carregaDadosLivro(params.id as unknown as number);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }, [params?.id])
-
-  async function carregaDadosLivro(id: number) {
-    const livro = await service.detalhar(id);
-    setLivro(livro);
-  }
+  const livro = parseLivro.fromJSON(livroJson);
 
   const gridStyles = {
     backgroundColor: theme.colors.positive.x050,

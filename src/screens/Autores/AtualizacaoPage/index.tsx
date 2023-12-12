@@ -4,48 +4,30 @@ import Form from "@/components/Form";
 import { autorService } from "@/services/autorService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function AtualizacaoPage() {
+export default function AtualizacaoPage({ autor }: { autor: IAutorAtualizacao }) {
   const theme = useTheme();
   const service = autorService();
-  const params = useParams();
-  const [nome, setNome] = useState('');
-  const [sobre, setSobre] = useState('');
+  const [nome, setNome] = useState(autor.nome);
+  const [sobre, setSobre] = useState(autor.sobre);
   const fields = [
     { name: 'Nome', slug: 'nome', value: nome, setValue: setNome },
     { name: 'Sobre', slug: 'sobre', value: sobre, setValue: setSobre }] as FieldProps[]
 
   async function atualizar(dados: IDadosFormulario) {
-    if (params?.id) {
-      const id = parseInt(params.id as string);
-      const autores = {...dados, id}
+      const id = autor.id;
+      const autores = {...dados, id};
       try {
         const resposta = await service.atualizar(autores as IAutorAtualizacao);
-        console.log("Autor atualizado com sucesso!");
-      } catch (err) {
-        console.error(err);
+        resposta.mensagens.map(mensagem => {
+          resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
+        })
+      } catch (e) {
+        if (e instanceof Error) toast.error(e.message);
       }
-    }
-  }
-
-  useEffect(() => {
-    buscarDadosAutor();
-  }, [])
-
-  async function buscarDadosAutor(){
-    if (params?.id) {
-      const id = parseInt(params.id as string);
-      try {
-        const autor = await service.detalhar(id);
-        setNome(autor.nome);
-        setSobre(autor.sobre);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
+  } 
 
   return (
     <>
@@ -59,6 +41,7 @@ export default function AtualizacaoPage() {
           backgroundColor: theme.colors.warning.x200
         }}
       >
+        <Toaster />
         <Form 
           title="Atualização" 
           buttonName="Atualizar" 

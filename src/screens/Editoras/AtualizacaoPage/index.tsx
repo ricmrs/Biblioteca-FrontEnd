@@ -4,42 +4,25 @@ import Form from "@/components/Form";
 import { editoraService } from "@/services/editoraService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function AtualizacaoPage() {
+export default function AtualizacaoPage({ editora }: { editora: IEditoraAtualizacao }) {
   const theme = useTheme();
   const service = editoraService();
-  const params = useParams();
-  const [nome, setNome] = useState('');
+  const [nome, setNome] = useState(editora.nome);
   const fields = [{ name: 'Nome', slug: 'nome', value: nome, setValue: setNome }] as FieldProps[]
 
   async function atualizar(dados: IDadosFormulario) {
-    if (params?.id) {
-      const id = parseInt(params.id as string);
-      const editora = {...dados, id}
-      try {
-        const resposta = await service.atualizar(editora as IEditoraAtualizacao);
-        console.log("Editora atualizada com sucesso!");
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
-
-  useEffect(() => {
-    buscarDadosEditora();
-  }, [])
-
-  async function buscarDadosEditora(){
-    if (params?.id) {
-      const id = parseInt(params.id as string);
-      try {
-        const editora = await service.detalhar(id);
-        setNome(editora.nome);
-      } catch (err) {
-        console.error(err);
-      }
+    const id = editora.id;
+    const novaEditora = { ...dados, id }
+    try {
+      const resposta = await service.atualizar(novaEditora as IEditoraAtualizacao);
+      resposta.mensagens.map(mensagem => {
+        resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
+      })
+    } catch (e) {
+      if (e instanceof Error) toast.error(e.message);
     }
   }
 
@@ -55,13 +38,14 @@ export default function AtualizacaoPage() {
           backgroundColor: theme.colors.negative.x200
         }}
       >
-        <Form 
-          title="Atualização" 
-          buttonName="Atualizar" 
+        <Toaster />
+        <Form
+          title="Atualização"
+          buttonName="Atualizar"
           color="negative"
-          type="editora" 
-          fields={fields} 
-          onSubmit={atualizar} 
+          type="editora"
+          fields={fields}
+          onSubmit={atualizar}
         />
       </Box>
     </>
