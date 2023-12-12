@@ -3,6 +3,7 @@ import { FieldProps } from "@/components/Field";
 import Form from "@/components/Form";
 import { livroService } from "@/services/livroService";
 import { useTheme } from "@/theme/ThemeProvider";
+import { getISODate } from "@/utils/getISODate";
 import { parseLivro } from "@/utils/parseData/parseJson";
 import Head from "next/head";
 import { useState } from "react";
@@ -18,7 +19,7 @@ export default function AtualizacaoPage({ livroJson }: { livroJson: ILivroDetalh
   const [idioma, setIdioma] = useState(livro.idioma);
   const [autorId, setAutorId] = useState(livro.autor.id);
   const [editoraId, setEditoraId] = useState(livro.editora.id);
-  const [dataPublicacao, setDataPublicacao] = useState(livro.dataPublicacao);
+  const [dataPublicacao, setDataPublicacao] = useState(getISODate(livro.dataPublicacao));
   const [preco, setPreco] = useState(livro.preco);
   const fields = [
     { name: 'Titulo', slug: 'titulo', value: titulo, setValue: setTitulo },
