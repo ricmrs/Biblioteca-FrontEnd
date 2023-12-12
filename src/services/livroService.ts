@@ -1,4 +1,4 @@
-import { parseLivroDetalhe, parseLivroListagem } from "@/utils/parseData/Livro";
+import { parseLivroDetalhe } from "@/utils/parseData/Livro";
 
 export function livroService(){
   const BASE_URL = "http://localhost:8080"; 
@@ -28,7 +28,7 @@ export function livroService(){
         .catch(() => { throw new Error('Não foi possível detalhar o livro, tente novamente mais tarde.') });
     },
     listarTodas: async (pagina: number): Promise<IPagina<ILivroListagem>> => {
-      return await fetch(`${BASE_URL}/livros?page=${pagina}`, 
+      return await fetch(`${BASE_URL}/livros?page=${pagina}&size=8`, 
         { 
           method: "GET", 
           headers: {"Content-type": "application/json"} 
