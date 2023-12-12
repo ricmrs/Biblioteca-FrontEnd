@@ -10,6 +10,7 @@ const StyledButton = styled(Text)<any>``;
 
 export interface ButtonBaseProps {
   href?: string;
+  type?: 'button' | 'reset' | 'submit';
   children: React.ReactNode;
   textVariant?: ThemeTypographyVariants;
   styleSheet?: StyleSheet;
@@ -20,6 +21,7 @@ export default function ButtonBase({
   textVariant,
   styleSheet,
   href,
+  type,
   ...props
 }: ButtonBaseProps) {
   const theme = useTheme();
@@ -33,6 +35,7 @@ export default function ButtonBase({
     <StyledButton
       ref={ref}
       tag={Tag}
+      type={type}
       href={href}
       styleSheet={{
         border: '0',

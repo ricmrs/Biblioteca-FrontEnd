@@ -65,6 +65,7 @@ export default function Form({ title, buttonName, color, fields, type, onSubmit 
         />)}
       <Box styleSheet={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
         <Button
+          type="button"
           styleSheet={{
             paddingVertical: { xs: 8, md: 8, xl: 5},
             paddingHorizontal: { xs: 5, md: 8, xl: 10 },
@@ -77,6 +78,7 @@ export default function Form({ title, buttonName, color, fields, type, onSubmit 
           Voltar
         </Button>
         <Button
+          type="submit"
           styleSheet={{
             paddingVertical: { xs: 8, md: 8, xl: 5},
             paddingHorizontal: { xs: 5, md: 8, xl: 10 },
