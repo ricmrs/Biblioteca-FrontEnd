@@ -3,19 +3,21 @@ import { FieldProps } from "@/components/Field";
 import Form from "@/components/Form";
 import { livroService } from "@/services/livroService";
 import { useTheme } from "@/theme/ThemeProvider";
+import { parseLivro } from "@/utils/parseData/parseJson";
 import Head from "next/head";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function AtualizacaoPage({ livro }: { livro: ILivroAtualizacao }) {
+export default function AtualizacaoPage({ livroJson }: { livroJson: ILivroDetalheJson }) {
   const theme = useTheme();
   const service = livroService();
+  const livro = parseLivro.fromJSON(livroJson);
   const [titulo, setTitulo] = useState(livro.titulo);
   const [descricao, setDescricao] = useState(livro.descricao);
   const [numeroPaginas, setNumeroPaginas] = useState(livro.numeroPaginas);
   const [idioma, setIdioma] = useState(livro.idioma);
-  const [autorId, setAutorId] = useState(livro.autorId);
-  const [editoraId, setEditoraId] = useState(livro.editoraId);
+  const [autorId, setAutorId] = useState(livro.autor.id);
+  const [editoraId, setEditoraId] = useState(livro.editora.id);
   const [dataPublicacao, setDataPublicacao] = useState(livro.dataPublicacao);
   const [preco, setPreco] = useState(livro.preco);
   const fields = [
