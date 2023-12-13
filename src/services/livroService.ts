@@ -11,10 +11,15 @@ export function livroService(){
           headers: {"Content-type": "application/json"} 
         })
         .then(async res => {
-          if (res.ok) return { ok: res.ok, mensagens: [`Livro ${livro.titulo} cadastrado com sucesso!`] };
-          const promise = await res.json() as Promise<IErroValidacao[]>;
-          const erros = (await promise).map(erro => `O campo ${erro.campo} ${erro.mensagem}`);
-          return { ok: res.ok, mensagens: erros }
+          if (res.ok) return { ok: res.ok, mensagens: `Livro ${livro.titulo} cadastrado com sucesso!` };
+          return { ok: res.ok, mensagens: await res.text()};
+        }).then(res => {
+          if(!res.ok && res.mensagens.startsWith('[')){
+            const mensagens = JSON.parse(res.mensagens) as IErroValidacao[];
+            const erros = mensagens.map(erro => `O campo ${erro.campo} ${erro.mensagem}`);
+            return { ok: res.ok, mensagens: erros }
+          }
+          return { ok: res.ok, mensagens: [res.mensagens]}
         })
         .catch(() => { throw new Error('Não foi possível cadastrar um novo livro, tente novamente mais tarde.') });
     },
@@ -42,10 +47,15 @@ export function livroService(){
           method: "PUT", 
           headers: {"Content-type": "application/json"} 
         }).then(async res => {
-          if (res.ok) return { ok: res.ok, mensagens: [`Livro ${livro.titulo} atualizado com sucesso!`] };
-          const promise = await res.json() as Promise<IErroValidacao[]>;
-          const erros = (await promise).map(erro => `O campo ${erro.campo} ${erro.mensagem}`);
-          return { ok: res.ok, mensagens: erros }
+          if (res.ok) return { ok: res.ok, mensagens: `Livro ${livro.titulo} atualizado com sucesso!` };
+          return { ok: res.ok, mensagens: await res.text()};
+        }).then(res => {
+          if(!res.ok && res.mensagens.startsWith('[')){
+            const mensagens = JSON.parse(res.mensagens) as IErroValidacao[];
+            const erros = mensagens.map(erro => `O campo ${erro.campo} ${erro.mensagem}`);
+            return { ok: res.ok, mensagens: erros }
+          }
+          return { ok: res.ok, mensagens: [res.mensagens]}
         })
         .catch(() => { throw new Error('Não foi possível atualizar o livro, tente novamente mais tarde.') });
     },
