@@ -29,11 +29,6 @@ export default function Form({ title, buttonName, color, fields, type, onSubmit 
       }), {})
     dadosFormulario = {...dadosFormulario, id: null}
     onSubmit(dadosFormulario as IDadosFormulario);
-    limparCampos();
-  }
-
-  function limparCampos(){
-    fields.map(field => field.setValue(''));
   }
 
   function voltar(event: React.MouseEvent<HTMLButtonElement>){
