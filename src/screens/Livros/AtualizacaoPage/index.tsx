@@ -24,12 +24,12 @@ export default function AtualizacaoPage({ livroJson }: { livroJson: ILivroDetalh
   const fields = [
     { name: 'Titulo', slug: 'titulo', value: titulo, setValue: setTitulo },
     { name: 'Descricao', slug: 'descricao', value: descricao, setValue: setDescricao },
-    { name: 'Número de Páginas', slug: 'numeroPaginas', value: numeroPaginas, setValue: setNumeroPaginas },
+    { name: 'Número de Páginas', slug: 'numeroPaginas', value: numeroPaginas, setValue: setNumeroPaginas, type: "number" },
     { name: 'Idioma', slug: 'idioma', value: idioma, setValue: setIdioma },
-    { name: 'Id do autor', slug: 'autorId', value: autorId, setValue: setAutorId },
-    { name: 'Id da editora', slug: 'editoraId', value: editoraId, setValue: setEditoraId },
+    { name: 'Id do autor', slug: 'autorId', value: autorId, setValue: setAutorId, type: "number" },
+    { name: 'Id da editora', slug: 'editoraId', value: editoraId, setValue: setEditoraId, type: "number" },
     { name: 'Data de publicação', slug: 'dataPublicacao', value: dataPublicacao, setValue: setDataPublicacao, type: "date" },
-    { name: 'Preço', slug: 'preco', value: preco, setValue: setPreco }] as FieldProps[]
+    { name: 'Preço', slug: 'preco', value: preco, setValue: setPreco, type: "number" }] as FieldProps[]
 
   async function atualizar(dados: IDadosFormulario) {
     const id = livro.id;
