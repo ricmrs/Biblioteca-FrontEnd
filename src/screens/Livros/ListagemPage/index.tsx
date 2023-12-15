@@ -1,10 +1,10 @@
 import Box from "@/components/Box";
 import Button from "@/components/Button";
+import Carregando from "@/components/Carregando";
 import Icon from "@/components/Icon";
 import Text from "@/components/Text";
 import { livroService } from "@/services/livroService";
 import { useTheme } from "@/theme/ThemeProvider";
-import { CircularProgress } from "@mui/material";
 import Head from "next/head";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,7 +21,6 @@ export default function ListagemPage() {
   const [livros, setLivros] = useState<ILivroListagem>([]);
   const [primeiraPagina, setPrimeiraPagina] = useState<boolean>();
   const [ultimaPagina, setUltimaPagina] = useState<boolean>();
-  const [vazio, setVazio] = useState<boolean>(true);
 
   useEffect(() => {
     if (page) {
@@ -32,11 +31,9 @@ export default function ListagemPage() {
   async function carregaDadosLivros() {
     const numPage = parseInt(page as string) - 1;
     const resposta = await service.listarTodas(numPage);
-    if (resposta.empty) router.push('listagem/page-error-404');
     setLivros(resposta.content)
     setPrimeiraPagina(resposta.first);
     setUltimaPagina(resposta.last);
-    setVazio(resposta.empty);
   }
 
   function voltarPagina() {
@@ -57,7 +54,12 @@ export default function ListagemPage() {
       resposta.mensagens.map(res => {
         resposta.ok ? toast.success(res) : toast.error(res);
       })
-      carregaDadosLivros();
+      if (livros?.length === 1 && !primeiraPagina) {
+        const numPage = (parseInt(page as string) - 1).toString();
+        router.push(`listagem?page=${numPage}`);
+      } else {
+        carregaDadosLivros();
+      }
     } catch (e) {
       if (e instanceof Error) toast.error(e.message);
     }
@@ -109,18 +111,8 @@ export default function ListagemPage() {
               </Button>
             </Box>
             <Box styleSheet={{ gap: { xs: 8, md: 10 }, height: { xs: 378, md: 463 } }}>
-              {vazio && Array(8).fill('').map((el, i) => (
-                <Box key={i}
-                  styleSheet={{
-                    backgroundColor: theme.colors.positive.x100,
-                    alignItems: "center",
-                    paddingVertical: { xs: 8, md: 12 },
-                    paddingHorizontal: 10,
-                  }}
-                >
-                  <CircularProgress size={25} color="success" />
-                </Box>
-              ))}
+              {(livros == undefined) && <Carregando colorVariant="positive" />}
+              {(livros?.length === 0 ? "Parece que não há nada aqui" : "")}
               {livros.map(livro =>
                 <Box
                   key={livro.id}

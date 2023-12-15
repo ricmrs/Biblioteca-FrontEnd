@@ -4,7 +4,7 @@ import Icon from "@/components/Icon";
 import Text from "@/components/Text";
 import { editoraService } from "@/services/editoraService";
 import { useTheme } from "@/theme/ThemeProvider";
-import { CircularProgress } from "@mui/material";
+import Carregando from "@/components/Carregando";
 import Head from "next/head";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,10 +18,9 @@ export default function ListagemPage() {
   const params = useSearchParams();
   let page = params.get('page');
 
-  const [editoras, setEditoras] = useState<IEditoraListagem>();
+  const [editoras, setEditoras] = useState<IEditoraListagem>([]);
   const [primeiraPagina, setPrimeiraPagina] = useState<boolean>();
   const [ultimaPagina, setUltimaPagina] = useState<boolean>();
-  const [vazio, setVazio] = useState<boolean>(true);
 
   useEffect(() => {
     if (page) {
@@ -32,23 +31,21 @@ export default function ListagemPage() {
   async function carregaDadosEditoras() {
     const numPage = parseInt(page as string) - 1;
     const resposta = await service.listarTodas(numPage);
-    if (resposta.empty) router.push('listagem/page-error-404');
     setEditoras(resposta.content);
     setPrimeiraPagina(resposta.first);
     setUltimaPagina(resposta.last);
-    setVazio(resposta.empty);
   }
 
   function voltarPagina() {
     if (primeiraPagina) return;
     const numPage = (parseInt(page as string) - 1).toString();
-    router.push(`?page=${numPage}`);
+    router.push(`listagem?page=${numPage}`);
   }
 
   function avancarPagina() {
     if (ultimaPagina) return;
     const numPage = (parseInt(page as string) + 1).toString();
-    router.push(`?page=${numPage}`);
+    router.push(`listagem?page=${numPage}`);
   }
 
   async function excluir(id: number, nome: string) {
@@ -57,7 +54,12 @@ export default function ListagemPage() {
       resposta.mensagens.map(res => {
         resposta.ok ? toast.success(res) : toast.error(res);
       })
-      carregaDadosEditoras();
+      if (editoras?.length === 1 && !primeiraPagina) {
+        const numPage = (parseInt(page as string) - 1).toString();
+        router.push(`listagem?page=${numPage}`);
+      } else {
+        carregaDadosEditoras();
+      }
     } catch (e) {
       if (e instanceof Error) toast.error(e.message);
     }
@@ -109,18 +111,8 @@ export default function ListagemPage() {
               </Button>
             </Box>
             <Box styleSheet={{ gap: { xs: 8, md: 10 }, height: { xs: 378, md: 463 } }}>
-              {vazio && Array(8).fill('').map((el, i) => (
-                <Box key={i}
-                  styleSheet={{
-                    backgroundColor: theme.colors.negative.x100,
-                    alignItems: "center",
-                    paddingVertical: { xs: 8, md: 12 },
-                    paddingHorizontal: 10,
-                  }}
-                >
-                  <CircularProgress size={25} color="error" />
-                </Box>
-              ))}
+              {(editoras == undefined) && <Carregando colorVariant="negative" />}
+              {(editoras?.length === 0 ? "Parece que não há nada aqui" : "")}
               {editoras?.map(editora =>
                 <Box
                   key={editora.id}
