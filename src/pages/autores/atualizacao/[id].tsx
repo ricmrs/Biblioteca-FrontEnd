@@ -8,13 +8,14 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const service = autorService();
   const id = parseInt(ctx.params?.id as string);
   const autor = await service.detalhar(id);
-  const autorJson = parseAutor.toJSON(autor);
 
   if (!autor) {
     return {
       notFound: true
     }
   }
+
+  const autorJson = parseAutor.toJSON(autor!);
 
   return {
     props: {

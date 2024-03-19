@@ -16,12 +16,12 @@ export function editoraService() {
         })
         .catch(() => { throw new Error('Não foi possível cadastrar uma nova editora, tente novamente mais tarde.') });
     },
-    detalhar: async (id: number): Promise<IEditoraDetalhe> => {
+    detalhar: async (id: number): Promise<IEditoraDetalhe|void> => {
       return await fetch(`${BASE_URL}/editoras/${id}`,
         {
           method: "GET",
           headers: { "Content-type": "application/json" }
-        }).then(res => { if (res.ok) return res.json(); })
+        }).then(res => { if (res.ok) return res.json(); else return null })
         .catch(() => { throw new Error('Não foi possível detalhar a editora, tente novamente mais tarde.') });
     },
     listarTodas: async (pagina: number): Promise<IPagina<IEditoraListagem>> => {

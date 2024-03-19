@@ -17,13 +17,13 @@ export function autorService() {
         })
         .catch(() => { throw new Error('Não foi possível cadastrar um novo autor, tente novamente mais tarde.') });
     },
-    detalhar: async (id: number): Promise<IAutorDetalhe> => {
+    detalhar: async (id: number): Promise<IAutorDetalhe|void> => {
       return await fetch(`${BASE_URL}/autores/${id}`,
         {
           method: "GET",
           headers: { "Content-type": "application/json" }
-        }).then(res => { if (res.ok) return res.json(); })
-        .then(res => parseAutorDetalhe(res))
+        }).then(res => { if (res.ok) return res.json(); else return null })
+        .then(res => { if(res) return parseAutorDetalhe(res) })
         .catch(() => { throw new Error('Não foi possível detalhar o autor, tente novamente mais tarde.') });
     },
     listarTodas: async (pagina: number): Promise<IPagina<IAutorListagem>> => {

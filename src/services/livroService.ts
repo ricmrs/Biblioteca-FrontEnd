@@ -23,13 +23,13 @@ export function livroService(){
         })
         .catch(() => { throw new Error('Não foi possível cadastrar um novo livro, tente novamente mais tarde.') });
     },
-    detalhar: async (id: number): Promise<ILivroDetalhe> => {
+    detalhar: async (id: number): Promise<ILivroDetalhe|void> => {
       return await fetch(`${BASE_URL}/livros/${id}`, 
         { 
           method: "GET", 
           headers: {"Content-type": "application/json"} 
-        }).then(res => { if (res.ok) return res.json(); })
-        .then(res => parseLivroDetalhe(res))
+        }).then(res => { if (res.ok) return res.json(); else return null })
+        .then(res => { if(res) return parseLivroDetalhe(res) })
         .catch(() => { throw new Error('Não foi possível detalhar o livro, tente novamente mais tarde.') });
     },
     listarTodas: async (pagina: number): Promise<IPagina<ILivroListagem>> => {
