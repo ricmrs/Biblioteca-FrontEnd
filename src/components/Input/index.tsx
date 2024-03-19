@@ -17,7 +17,7 @@ interface InputProps {
   onEnterPressed?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Input = React.forwardRef(({ children, variant, styleSheet, ...props }: InputProps, ref) => {
+const Input = React.forwardRef(({ children, variant, styleSheet, value, ...props }: InputProps, ref) => {
   const theme = useTheme();
   const textVariant = theme.typography.variants[variant!];
   return (
@@ -27,6 +27,7 @@ const Input = React.forwardRef(({ children, variant, styleSheet, ...props }: Inp
         ...textVariant,
         ...styleSheet
       }}
+      value={value == null ? '' : value}
       {...props}
     />
   )
