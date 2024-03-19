@@ -5,12 +5,14 @@ import { autorService } from "@/services/autorService";
 import { useTheme } from "@/theme/ThemeProvider";
 import { parseAutor } from "@/utils/parseData/parseJson";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AtualizacaoPage({ autorJson }: { autorJson: IAutorDetalheJson }) {
   const theme = useTheme();
   const service = autorService();
+  const router = useRouter();
   const autor = parseAutor.fromJSON(autorJson);
   const [nome, setNome] = useState(autor.nome);
   const [sobre, setSobre] = useState(autor.sobre);
@@ -23,6 +25,7 @@ export default function AtualizacaoPage({ autorJson }: { autorJson: IAutorDetalh
       const novoAutor = {...dados, id};
       try {
         const resposta = await service.atualizar(novoAutor as IAutorAtualizacao);
+        if(resposta.ok) router.back();
         resposta.mensagens.map(mensagem => {
           resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
         })

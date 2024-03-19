@@ -4,18 +4,21 @@ import Form from "@/components/Form";
 import { editoraService } from "@/services/editoraService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function CadastroPage() {
   const theme = useTheme();
   const service = editoraService();
+  const router = useRouter();
   const [nome, setNome] = useState('');
   const fields = [{ name: 'Nome', slug: 'nome', value: nome, setValue: setNome }] as FieldProps[];
 
   async function cadastrar(dados: IDadosFormulario) {
     try {
       const resposta = await service.cadastrar(dados as IEditoraCadastro);
+      if(resposta.ok) router.back();
       resposta.mensagens.map(mensagem => {
         resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
       })

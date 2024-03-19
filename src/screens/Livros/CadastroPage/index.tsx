@@ -4,12 +4,14 @@ import Form from "@/components/Form";
 import { livroService } from "@/services/livroService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function CadastroPage() {
   const theme = useTheme();
   const service = livroService();
+  const router = useRouter();
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [numeroPaginas, setNumeroPaginas] = useState('');
@@ -31,6 +33,7 @@ export default function CadastroPage() {
   async function cadastrar(dados: IDadosFormulario) {
     try {
       const resposta = await service.cadastrar(dados as ILivroCadastro);
+      if(resposta.ok) router.back();
       resposta.mensagens.map(mensagem => {
         resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
       })

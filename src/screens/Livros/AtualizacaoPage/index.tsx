@@ -6,12 +6,14 @@ import { useTheme } from "@/theme/ThemeProvider";
 import { getISODate } from "@/utils/getISODate";
 import { parseLivro } from "@/utils/parseData/parseJson";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AtualizacaoPage({ livroJson }: { livroJson: ILivroDetalheJson }) {
   const theme = useTheme();
   const service = livroService();
+  const router = useRouter();
   const livro = parseLivro.fromJSON(livroJson);
   const [titulo, setTitulo] = useState(livro.titulo);
   const [descricao, setDescricao] = useState(livro.descricao);
@@ -36,6 +38,7 @@ export default function AtualizacaoPage({ livroJson }: { livroJson: ILivroDetalh
     const novoLivro = { ...dados, id }
     try {
       const resposta = await service.atualizar(novoLivro as ILivroAtualizacao);
+      if(resposta.ok) router.back();
       resposta.mensagens.map(mensagem => {
         resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
       })

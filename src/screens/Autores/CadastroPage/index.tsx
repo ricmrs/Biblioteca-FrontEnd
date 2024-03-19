@@ -4,12 +4,14 @@ import Form from "@/components/Form";
 import { autorService } from "@/services/autorService";
 import { useTheme } from "@/theme/ThemeProvider";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function CadastroPage() {
   const theme = useTheme();
   const service = autorService();
+  const router = useRouter();
   const [nome, setNome] = useState('');
   const [sobre, setSobre] = useState('');
   const fields = [
@@ -19,6 +21,7 @@ export default function CadastroPage() {
   async function cadastrar(dados: IDadosFormulario) {
     try {
       const resposta = await service.cadastrar(dados as IAutorCadastro);
+      if(resposta.ok) router.back();
       resposta.mensagens.map(mensagem => {
         resposta.ok ? toast.success(mensagem) : toast.error(mensagem);
       })
