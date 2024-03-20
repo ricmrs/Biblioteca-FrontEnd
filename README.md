@@ -17,7 +17,7 @@ npm install
 ## Executando o Frontend
 Para iniciar o servidor de desenvolvimento e visualizar o frontend em seu navegador, execute:
 ```
-npm run start
+npm run dev
 ```
 
 O frontend será executado em [http://localhost:3000](http://localhost:3000/).
